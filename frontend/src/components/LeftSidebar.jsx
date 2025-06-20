@@ -10,6 +10,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { Link } from 'react-router-dom'
+import Avatar from '@mui/material/Avatar'
 
 const LeftSidebar = () => {
 
@@ -22,7 +23,7 @@ const LeftSidebar = () => {
     }
 
     return (
-        <div className='left_sidebar w-[23%] p-3 '>
+        <div className='left_sidebar w-[23%] p-3 relative'>
             <div className="left_sidebar_header px-1">
                 <Link to="/">
                     <img 
@@ -36,12 +37,14 @@ const LeftSidebar = () => {
             
 
             <div className='left_sidebar_body'>
-                <Items 
-                    title="Home" 
-                    Icon={HomeOutlinedIcon} 
-                    selected={selectedItem==="Home"}
-                    onClick={handleItemClick}
-                />
+                <Link to="/"> 
+                    <Items 
+                        title="Home" 
+                        Icon={HomeOutlinedIcon} 
+                        selected={selectedItem==="Home"}
+                        onClick={handleItemClick}
+                    />
+                </Link>
 
                 <Items 
                     title="Explore" 
@@ -85,7 +88,7 @@ const LeftSidebar = () => {
                     onClick={handleItemClick}
                 />
 
-                <Link to="./profile">
+                <Link to="/profile">
                     <Items 
                         title="Profile" 
                         Icon={PersonOutlineIcon} 
@@ -107,7 +110,16 @@ const LeftSidebar = () => {
                 </div>
             </div>
 
-            <div className='left_sidebar_footer'>
+            <div className='left_sidebar_footer bg-gray-100 flex items-center absolute left-0 bottom-0 h-[55px] w-[100%] px-3 text-gray-700'>
+                <Avatar 
+                    src='/Profile_Photu.jpg'
+                    alt="avatar"
+                />
+                <div className="user_info mr-6 ml-2">
+                    <h4 className="user_name font-semibold"> Ankit Kumar </h4>
+                    <p className="user_id text-[13px] mt-[-5px]"> @andromeda50897</p>
+                </div>
+                <MoreHorizIcon />
             </div>
         </div>
     )
