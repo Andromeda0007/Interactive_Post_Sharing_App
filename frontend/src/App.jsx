@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import LeftSidebar from './components/LeftSidebar';
 import RightSidebar from './components/RightSidebar';
-import Body from './Body';
+import Body from './components/Body';
 
 const App = () => {
   return (
@@ -14,4 +14,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App; 

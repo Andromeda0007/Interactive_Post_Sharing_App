@@ -26,7 +26,7 @@ const CreatePost = () => {
             >
                 <h1 className=''> Following </h1>
             </div>
-            <div className={`setting_button  px-5 py-1 flex items-center hover:bg-gray-200 cursor-pointer ${selectedTab==="setting_button"? "bg-gray-500 hover:bg-gray-500 text-white" : ""}`}
+            <div className={`setting_button  px-5 py-1 flex items-center hover:bg-gray-200 cursor-pointer ${selectedTab==="setting_button"? "bg-gray-400 hover:bg-gray-400 text-white" : ""}`}
                 onClick={()=>handleClick("setting_button")}>
                 <SettingsIcon style={{fontSize: "20px"}} className="text-gray-700"/>
             </div>

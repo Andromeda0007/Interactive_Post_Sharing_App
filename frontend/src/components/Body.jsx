@@ -1,9 +1,10 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Profile from './components/Profile'
-import Home from './components/Home'
-import Login from './components/Login'
-import Feed from './components/Feed'
+import Profile from './Profile'
+import Home from './Home'
+import Login from './Login'
+import Feed from './Feed'
+import SignUp from './SignUp'
 
 
 const Body = () => {
@@ -29,6 +30,10 @@ const Body = () => {
         {
             path:"/profile",
             element: <Profile />
+        },
+        {
+            path: "/signup",
+            element: <SignUp />
         }
     ])
   return (
@@ -38,4 +43,4 @@ const Body = () => {
   )
 }
 
-export default Body
+export default Body 

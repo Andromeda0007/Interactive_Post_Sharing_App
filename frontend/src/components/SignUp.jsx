@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const Login = () => {
+const SignUp = () => {
   
   return (
     <div className="login app w-full h-screen flex justify-center items-center bg-gray-50">
-      <div className='bg-white w-[75%] h-[90%] shadow-2xl flex '>
+      <div className='bg-white w-[75%] h-[90%] shadow-2xl flex'>
         
         <div className="logo w-[43%] flex items-center justify-center flex-col ">
           <Link to="/">
@@ -22,31 +22,34 @@ const Login = () => {
         
         <div className="form w-[57%] py-7 px-9 border-l-2 border-gray-50 items-center flex flex-col">
           
-          <div className='login_authentication w-full px-4 py-2 flex flex-col bg-gray-50 rounded-2xl'>
+          <div className='login_authentication w-full px-4 py-2 flex flex-col bg-gray-50 rounded-2xl mb-2'>
             <div className='login_text flex'>
-              <h1 className=' text-[35px] '> Log In </h1>
+              <h1 className=' text-[35px] mb-2 '> Sign Up </h1>
             </div>
+
+            <input 
+              placeholder='Username' 
+              className='h-[40px] w-full p-2 mb-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500' 
+            />
             <input 
               type="email" 
               placeholder='Email Id' 
-              className='h-[40px] w-full p-2 mb-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500'
+              className='h-[40px] w-full p-2 mb-2 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500'
             />
-            <h6 className='mb-4 ml-1 text-gray-400 text-[11px]'>Login via OTP</h6>
             
             <input 
               placeholder='Enter Your Password' 
               className='h-[40px] w-full p-2 mb-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500' 
             />
-            <h6 className='mb-3 ml-1 text-blue-700 text-[11px] cursor-pointer hover:underline'>Forgot Password?</h6>
             
             <div className='login_button w-full bg-blue-500 hover:bg-blue-600 rounded-full flex px-5 py-3 my-2 justify-center items-center text-white cursor-pointer transition-colors'>
-              Login
+              SignUp
             </div>
             
-            <Link to={"/signup"}>
+            <Link to={"/login"}>
               <div className='login_button w-full bg-gray-300 hover:bg-gray-400 rounded-full flex px-5 py-3 mt-1 justify-center items-center gap-1 cursor-pointer transition-colors'>
-                <span>Don't have an Account?</span>
-                <span className='font-semibold text-blue-700'>Sign Up</span>
+                <span> Already have an Account?</span>
+                <span className='font-semibold text-blue-700'>Login</span>
               </div>
             </Link>
             
@@ -81,4 +84,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUp

@@ -11,6 +11,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { Link } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar'
+import { IconButton } from '@mui/material'
 
 const LeftSidebar = () => {
 
@@ -115,11 +116,17 @@ const LeftSidebar = () => {
                     src='/Profile_Photu.jpg'
                     alt="avatar"
                 />
-                <div className="user_info mr-6 ml-2">
+                <div className="user_info mr-3 ml-2">
                     <h4 className="user_name font-semibold"> Ankit Kumar </h4>
                     <p className="user_id text-[13px] mt-[-5px]"> @andromeda50897</p>
                 </div>
-                <MoreHorizIcon />
+
+                <Link to="/login">
+                    <IconButton>
+                        <MoreHorizIcon style={{color:"#444444"}}/>
+                    </IconButton>
+                </Link>
+
             </div>
         </div>
     )
