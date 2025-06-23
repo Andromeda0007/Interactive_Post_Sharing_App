@@ -6,7 +6,7 @@ import userRoutes from "./routers/userRoute.js";
 import tweetRoutes from "./routers/tweetRoute.js";
 
 dotenv.config({ 
-    path: ".env" 
+    path: ".env"   
 });
 
 const app = express();
@@ -29,3 +29,4 @@ app.use("/api/v1/tweet", tweetRoutes);
 app.listen(process.env.PORT, ()=>{
     console.log(`✅ Server is running on http://localhost:${process.env.PORT}`);    
 });   
+  

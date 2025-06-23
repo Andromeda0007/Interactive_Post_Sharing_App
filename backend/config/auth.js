@@ -6,7 +6,7 @@ dotenv.config({
     path: "../config/.env"
 })
 
-export const isAuthenticated = async (req, res, next)=>{
+export const isAuthenticated = async (req, res, next)=>{ 
     try{
         const {token} = req.cookies;
         console.log(token);
