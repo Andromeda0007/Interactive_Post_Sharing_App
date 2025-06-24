@@ -20,7 +20,12 @@ const Body = () => {
                 {
                     path: "/profile/:id",  
                     element: <Profile />
+                },
+                {
+                path: "/profile",
+                element: <Profile /> // For logged-in user's own profile
                 }
+
             ]
         },
         {

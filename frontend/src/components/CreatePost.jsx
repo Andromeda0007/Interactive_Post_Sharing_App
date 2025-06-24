@@ -34,7 +34,7 @@ const CreatePost = () => {
         <div className="createpost_bottom p-3 border-x-2 border-b-2 border-gray-100 bg-white">
             <form action='submit '>
                 <div className='flex items-center mt-1'>
-                    <Avatar src='./Profile_Photu.jpg'/>
+                    <Avatar src='./Profile_Photu.png'/>
                     <input 
                         className='border-1 border-gray-400 ml-3 w-full rounded-full px-[14px] h-[37px]'
                         type="text" 

@@ -13,7 +13,7 @@ const Tweet = () => {
     <div className='border-2 border-gray-50 mt-2 bg-white p-2 rounded-xl shadow-sm'>
       <div>
         <div className='flex'>
-          <Avatar src='./Profile_Photu.jpg' className='mt-1'/>
+          <Avatar src='/Profile_Photu.png' className='mt-1'/>
           <div className='ml-2'>
             <div className='flex items-center'>
               <h1 className='font-semibold'> Ankit Kumar </h1>
