@@ -1,17 +1,48 @@
 import React, { useState } from 'react'
-import SettingsIcon from '@mui/icons-material/Settings'
+import SettingsIcon from '@mui/icons-material/Settings';
+import Avatar from '@mui/material/Avatar';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import Avatar from '@mui/material/Avatar'
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import GifBoxIcon from '@mui/icons-material/GifBox';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import axios from 'axios';
+import { TWEET_API_END_POINT } from '../utils/constant';
+import toast from "react-hot-toast"
+import { useSelector } from 'react-redux';
+
 
 const CreatePost = () => {
 
     const [selectedTab, setSelectedTab] = useState("foryou");
+    const [description, setDescription] = useState("");
+    const {loggedInUser} = useSelector(store=>store.user);
 
     const handleClick = (tabname)=>{
         setSelectedTab(tabname);
 
         console.log(tabname);
     };
+
+    const submitHandler = async (e)=>{
+        e.preventDefault();
+        console.log("nigga");
+        console.log(description);
+
+        try{
+            const res = await axios.post(`${TWEET_API_END_POINT}/create`, {description, loggedInUserId:loggedInUser?._id}, {withCredentials:true});
+
+            if(res.data.success)
+            {
+                toast.success(res.data.message);
+            }
+        }
+        catch(error)
+        {   
+            toast.error(error.response.data.message);
+            console.log(error);
+        }
+    }
 
   return (
     <div className='createpost'>
@@ -32,27 +63,32 @@ const CreatePost = () => {
             </div>
         </div>
         <div className="createpost_bottom p-3 border-x-2 border-b-2 border-gray-100 bg-white">
-            <form action='submit '>
+            <form onSubmit={submitHandler}>
                 <div className='flex items-center mt-1'>
                     <Avatar src='./Profile_Photu.png'/>
-                    <input 
+                    <input
+                        value = {description}
+                        onChange={(e)=>setDescription(e.target.value)}
                         className='border-1 border-gray-400 ml-3 w-full rounded-full px-[14px] h-[37px]'
                         type="text" 
                         placeholder='What is happening?'
                     />
                 </div>
                 <div className='flex pt-3'>
-                    <div className='icons flex w-[75%] px-[58px] py-1 items-center gap-4'>
+                    <div className='icons flex w-[75%] px-2 py-1 items-center gap-4'>
 
-                        <PhotoLibraryIcon className="text-gray-500" style={{fontSize:""}}/>
-                        <PhotoLibraryIcon className="text-gray-500" style={{fontSize:""}}/>
-                        <PhotoLibraryIcon className="text-gray-500" style={{fontSize:""}}/>
-                        <PhotoLibraryIcon className="text-gray-500" style={{fontSize:""}}/>
-                        <PhotoLibraryIcon className="text-gray-500" style={{fontSize:""}}/>
+                        <div className='icons flex w-[75%] px-[58px] py-1 items-center gap-6'>
+                            <PhotoLibraryIcon className="text-gray-500" />
+                            <CameraAltIcon className="text-gray-500" />
+                            <GifBoxIcon className="text-gray-500" />
+                            <SentimentSatisfiedAltIcon className="text-gray-500" />
+                            <LocationOnIcon className="text-gray-500" />
+                        </div>
+
                     </div>
-                    <div className=' w-[25%] px-4  flex items-center justify-center'>
-                        <h1 className='rounded-full bg-blue-300 px-5 py-1 text-gray-100 font-semibold cursor-pointer'> Post </h1>
-                    </div>
+                    <button className=' w-[20%] px-1 flex items-center justify-center rounded-full  bg-blue-400 hover:bg-blue-500 text-white font-semibold ml-3' type='submit'>
+                        Post
+                    </button>
                 </div>
             </form>
         </div>

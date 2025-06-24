@@ -5,13 +5,15 @@ import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useOtherUsers from '../hooks/useOtherUsers';
 import useGetProfile from '../hooks/useGetProfile';
+import useGetMyTweets from '../hooks/useGetMyTweets';
 
 const Home = () => {
-  const { loggedInUser, otherUsers } = useSelector((store) => store.user);
+  const { loggedInUser, otherUsers} = useSelector((store) => store.user);
 
-  // Fetch own profile + other users
   useGetProfile(loggedInUser?._id);
   useOtherUsers(loggedInUser?._id);
+  console.log("LOGGED IN USER ID:", loggedInUser?._id);
+  useGetMyTweets(loggedInUser?._id);
 
   return (
     <div className='home flex shadow-2xl w-[85%] h-[90%] bg-white'>

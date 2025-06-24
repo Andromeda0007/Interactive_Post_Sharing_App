@@ -74,9 +74,9 @@ const LeftSidebar = () => {
       </div>
 
       {/* Footer - User Info */}
-      <div className='left_sidebar_footer bg-gray-100 flex items-center absolute left-0 bottom-0 h-[55px] w-[100%] px-3 text-gray-700'>
-        <Avatar src='/Profile_Photu.png' alt="avatar" />
-        <div className="user_info mr-3 ml-2">
+      <div className='left_sidebar_footer bg-gray-100 flex items-center absolute left-0 bottom-0 h-[55px] w-[100%] px-2 text-gray-700 justify-between'>
+        <Avatar src='/Profile_Photu.png' alt="avatar"  className='ml-1'/>
+        <div className="user_info mr-1 ml-[-5px]">
           <h4 className="user_name font-semibold"> {loggedInUser?.name || "Loading..."} </h4>
           <p className="user_id text-[13px] mt-[-5px]"> @{loggedInUser?.username || "unknown"} </p>
         </div>

@@ -3,9 +3,11 @@ import { User } from "../models/userSchema.js";
 
 export const createTweet = async (req, res)=>{
     try{
-        const{description, UserId} = req.body;
+        const{description, loggedInUserId} = req.body;
 
-        if(!description || !UserId)
+        console.log("asfsdfadsfjlsdfnasdnfansdf", loggedInUserId);
+
+        if(!description || !loggedInUserId)
         {
             return res.status(401).json({
                 message:"All Fields are required",
@@ -16,7 +18,7 @@ export const createTweet = async (req, res)=>{
         {
             await Tweet.create({
                 description: description,
-                userId: UserId,
+                userId: loggedInUserId,
             });
 
             return res.status(200).json({
@@ -79,29 +81,28 @@ export const likeOrDislike = async (req, res)=>{
     }
 };
 
-export const getAllTweets = async (req, res) => {
+export const getAllMyTweets = async (req, res) => {
   try {
     const id = req.params.id; // Logged-in user ID
 
-    // Find logged-in user
+    // Verify that user exists
     const user = await User.findById(id);
-
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Build array of IDs to fetch tweets from: [user + following]
-    const userIds = [user._id, ...user.following];
-
-    // Fetch all tweets made by those users
-    const tweets = await Tweet.find({ userId: { $in: userIds } }).sort({ createdAt: -1 });
+    // Fetch ONLY the tweets created by the logged-in user
+    const tweets = await Tweet.find({ userId: id })
+      .sort({ createdAt: -1 })
+      .populate("userId", "name username"); // ⬅️ Populate user info if needed
 
     return res.status(200).json({ tweets });
   } catch (error) {
-    console.error("Error fetching tweets:", error);
+    console.error("Error fetching user's tweets:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 export const getFollowingTweets = async (req, res) => {
