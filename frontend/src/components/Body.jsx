@@ -18,14 +18,14 @@ const Body = () => {
                     element: <Feed />
                 },
                 {
-                    path: "/profile",
+                    path: "/profile/:id",  
                     element: <Profile />
                 }
             ]
         },
         {
             path:"/login",
-            element: <Login />
+            element: <Login />  
         },
         {
             path:"/profile",

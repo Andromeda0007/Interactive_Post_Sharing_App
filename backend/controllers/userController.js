@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken"
 
 export const Register = async (req, res)=>{
     try{
-        const {name, username, email, password} = req.body;
-        if(!name || !username || !email || !password)
+        const {fullname, username, email, password} = req.body;
+        if(!fullname || !username || !email || !password)
         {
             return res.status(401).json({
                 message: "All fields are required",
@@ -26,7 +26,7 @@ export const Register = async (req, res)=>{
             const hashedPassword = await bcryptjs.hash(password, 16);
 
             await User.create({
-                name: name,
+                name: fullname,
                 username: username,
                 email: email, 
                 password: hashedPassword, // ise pehle encrypt karenge 
@@ -43,55 +43,66 @@ export const Register = async (req, res)=>{
     }
 };
 
-export const Login = async (req, res)=>{
-    try{
-        const {username, password} = req.body;
+export const Login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-        if(!username || !password)
-        {
-            return res.status(401).json({
-                message: "All fields are required!!",
-                success: false,
-            })
-        }
-        else
-        {
-            const user = await User.findOne({username});
-
-            if(user)
-            {   
-                const match = await bcryptjs.compare(password, user.password);
-
-                if(!match)
-                {
-                    return res.status(401).json({
-                        message: "Incorrect password or email",
-                        success: false
-                    })
-                }
-                else
-                {   
-                    const token = await jwt.sign({id:user._id}, process.env.TOKEN_SECRET, {expiresIn: "1d"});
-
-                    return res.status(201).cookie("token", token, {expiresIn: "1d", httpOnly:true}).json({
-                        message: `Welcome back ${user.username}`,
-                        success: true,
-                    })
-                }
-            }
-            else
-            {
-                return res.status(401).json({
-                    message: "Incorrect Password or email",
-                    success: false,
-                })
-            }
-        }
+    if (!username || !password) {
+      return res.status(401).json({
+        message: "All fields are required!!",
+        success: false,
+      });
     }
-    catch(error){
-        console.log(error);
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "User not found.",
+        success: false,
+      });
     }
+
+    const match = await bcryptjs.compare(password, user.password);
+
+    if (!match) {
+      return res.status(401).json({
+        message: "Incorrect password.",
+        success: false,
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+      expiresIn: "1d", // keep this
+    });
+
+    console.log("token from login", token);
+
+    return res
+  .status(201)
+  .cookie("token", token, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // ✅ 1 day in milliseconds
+    sameSite: "lax",             // optional: protects against CSRF
+    secure: process.env.NODE_ENV === "production", // ✅ only send cookie over HTTPS in production
+  })
+  .json({
+    message: `Welcome back ${user.username}`,
+    user,
+    success: true,
+  });
+
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Something went wrong on the server.",
+      success: false,
+    });
+  }
 };
+
+
 
 
 export const Logout = (req, res)=>{
@@ -158,7 +169,8 @@ export const getMyProfile = async (req, res)=>{
         const id = req.params.id;
         const user = await User.findById(id).select("-password");
         return res.status(200).json({
-            message: user,
+            message: "You are the user",
+            user,
         })
     }
     catch(error)
@@ -169,7 +181,7 @@ export const getMyProfile = async (req, res)=>{
 
 export const getOtherUsers = async (req, res) => {
   try {
-    const  id  = req.body;
+    const id  = req.params.id;
 
     const otherUsers = await User.find({ _id: { $ne: id } }).select("-password");
 
