@@ -56,15 +56,16 @@ const LeftSidebar = () => {
     <div className='left_sidebar w-[23%] p-3 relative'>
       
       {/* Logo */}
-      <div className="left_sidebar_header px-1">
-        <Link to="/">
-          <img 
-            className='twitter_logo h-[50px] hover:scale-[1.05] transition-transform duration-300 ease-out'
-            src="https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg"
-            alt="twitter_image"
-          />
-        </Link>
-      </div>
+      <Link to="/">
+        <div className="left_sidebar_header flex items-center">
+            <img 
+              className='twitter_logo h-[70px] opacity-85 hover:scale-[1.05] transition-transform duration-300 ease-out mb-1'
+              src="./Square_Monkey.jpg"
+              alt="twitter_image"
+            />
+        </div>
+      </Link>
+
 
       {/* Navigation Items */}
       <div className='left_sidebar_body'>
@@ -104,10 +105,6 @@ const LeftSidebar = () => {
         />
 
         <Items title="More" Icon={MoreHorizIcon} selected={selectedItem === "More"} onClick={() => handleItemClick("More")} />
-
-        <div className='button flex justify-center items-center p-2'>
-          <button type='submit' className='bg-blue-400 py-2 w-[100%] rounded-full text-white hover:bg-blue-500'> Post </button>
-        </div>
       </div>
 
       {/* Footer - User Info */}

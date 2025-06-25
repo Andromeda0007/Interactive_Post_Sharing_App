@@ -41,13 +41,13 @@ const SignUp = () => {
         <div className="logo w-[45%] flex items-center justify-center flex-col ">
           <Link to="/">
             <img 
-              src="https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg?ga=GA1.1.1896762506.1750320800&semt=ais_hybrid&w=740" 
+              src="./Square_Monkey.jpg" 
               alt="Twitter Logo" 
               className="max-w-full max-h-full object-contain"
             />
           </Link>
           <div className='mt-[-50px] px-2'>
-            <h1 className='text-[40px] font-bold text-gray-800'> Happening Now!!</h1>
+            <h1 className='text-[40px] font-bold text-gray-800'> Say More!!</h1>
           </div>
         </div>
         
