@@ -1,22 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CreatePost from './CreatePost';
 import Tweet from './Tweet';
 import { Avatar, IconButton } from '@mui/material';
 import { ArrowRightAlt } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useGetProfile from '../hooks/useGetProfile';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { USER_API_END_POINT } from '../utils/constant';
+import { followingUpdate } from '../redux/userSlice';
+import { getRefresh } from '../redux/tweetSlice'; // ✅ NEW: Import the refresh toggle
 
 const Profile = () => {
   const { id: profileId } = useParams();
   const { loggedInUser, viewedProfile } = useSelector(store => store.user);
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
 
   const isSelf = !profileId || profileId === loggedInUser?._id;
+  const user = isSelf ? loggedInUser : viewedProfile;
 
-  // Fetch another user's profile only
+  // Fetch viewed profile if it's not self
   useGetProfile(isSelf ? null : profileId);
 
-  const user = isSelf ? loggedInUser : viewedProfile;
+  const followAndUnfollowHandler = async () => {
+    try {
+      setLoading(true);
+      let res;
+
+      const isFollowing = loggedInUser?.following?.includes(profileId);
+
+      if (isFollowing) {
+        res = await axios.post(
+          `${USER_API_END_POINT}/unfollow/${profileId}`,
+          { id: loggedInUser._id },
+          { withCredentials: true }
+        );
+      } else {
+        res = await axios.post(
+          `${USER_API_END_POINT}/follow/${profileId}`,
+          { id: loggedInUser._id },
+          { withCredentials: true }
+        );
+      }
+
+      if (res?.data?.message) {
+        toast.success(res.data.message);
+        dispatch(followingUpdate(profileId));
+        dispatch(getRefresh()); // ✅ NEW: Trigger tweet refetch
+      } else {
+        toast.error("Unexpected response from server.");
+      }
+
+    } catch (error) {
+      console.error("❌ Error in follow/unfollow:", error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user) return <p className='text-center mt-10'>Loading profile...</p>;
 
@@ -37,7 +81,7 @@ const Profile = () => {
         <img className="h-[130px]" src="/Header_Image.png" alt="loading" />
       </div>
 
-      <div className='z-10 flex justify-between mt-[-65px] absolute w-[100%]  px-3 '>
+      <div className='z-10 flex justify-between mt-[-65px] absolute w-[100%] px-3 '>
         <div>
           <Avatar
             src='/Profile_Photu.png'
@@ -49,13 +93,27 @@ const Profile = () => {
             <p className='text-[12px] text-gray-600 mt-[-3px]'> @{user.username} </p>
           </div>
         </div>
-        {
-          isSelf && (
-            <div className='bg-gray-200 rounded-full px-5 py-2 h-[35px] flex items-center mt-[75px] cursor-pointer text-gray-600 font-semibold hover:bg-gray-300'>
-              Edit Profile
-            </div>
-          )
-        }
+
+        {isSelf ? (
+          <div className='bg-gray-200 rounded-full px-5 py-2 h-[35px] flex items-center mt-[75px] cursor-pointer text-gray-600 font-semibold hover:bg-gray-300'>
+            Edit Profile
+          </div>
+        ) : (
+          <div
+            onClick={loading ? null : followAndUnfollowHandler}
+            className={`rounded-full px-5 py-2 h-[35px] flex items-center mt-[75px] cursor-pointer font-semibold transition-all ${
+              loading
+                ? 'bg-gray-400 text-white cursor-not-allowed'
+                : 'bg-gray-800 hover:bg-gray-900 text-white'
+            }`}
+          >
+            {loading
+              ? "Processing..."
+              : loggedInUser?.following?.includes(profileId)
+              ? "Following"
+              : "Follow"}
+          </div>
+        )}
       </div>
 
       <div className="bio mt-[94px] px-4 py-1">

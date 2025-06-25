@@ -1,4 +1,3 @@
-// redux/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
@@ -18,8 +17,25 @@ const userSlice = createSlice({
     setOtherUsers: (state, action) => {
       state.otherUsers = action.payload;
     },
+    followingUpdate: (state, action) => {
+      const profileId = action.payload;
+
+      if (!state.loggedInUser || !state.loggedInUser.following) return;
+
+      const isFollowing = state.loggedInUser.following.includes(profileId);
+
+      if (isFollowing) {
+        state.loggedInUser.following = state.loggedInUser.following.filter(
+          (id) => id !== profileId
+        );
+      } else {
+        state.loggedInUser.following.push(profileId);
+      }
+    },
   },
 });
 
-export const { setLoggedInUser, setViewedProfile, setOtherUsers } = userSlice.actions;
+export const {setLoggedInUser, setViewedProfile, setOtherUsers, followingUpdate,
+} = userSlice.actions;
+
 export default userSlice.reducer;
