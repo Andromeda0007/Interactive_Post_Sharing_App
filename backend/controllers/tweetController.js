@@ -110,29 +110,32 @@ export const getFollowingTweets = async (req, res) => {
   try {
     const id = req.params.id;
 
-    // Get the logged-in user
+    // Step 1: Get the logged-in user
     const loggedInUser = await User.findById(id);
 
     if (!loggedInUser) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Check if following list is empty
+    // Step 2: Check if following list is empty
     if (!loggedInUser.following || loggedInUser.following.length === 0) {
       return res.status(200).json({ tweets: [] });
     }
 
-    // Fetch tweets from users that the logged-in user is following
+    // Step 3: Fetch tweets from users that the logged-in user is following
     const followingTweets = await Tweet.find({
       userId: { $in: loggedInUser.following },
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .populate("userId", "name username"); // 👈 This line makes the difference
 
+    // Step 4: Return tweets
     return res.status(200).json({
       tweets: followingTweets,
     });
 
   } catch (error) {
-    console.error("Error in getFollowingTweets:", error);
+    console.error("❌ Error in getFollowingTweets:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
