@@ -47,11 +47,13 @@ const Tweet = ({ tweet }) => {
   return (
     <div className='border-2 border-gray-50 mt-2 bg-white p-2 rounded-xl shadow-sm'>
       <div className='flex'>
-        <Avatar src='/Profile_Photu.png' className='mt-1' />
+        <Avatar src={ loggedInUser?._id === tweet?.userId?._id? 'loggedInUserImage.png' : '/Profile_Photu.png'} className='mt-1' />
         <div className='ml-2 w-full'>
           <div className='flex items-center'>
             <h1 className='font-semibold'>{tweet.userId.name}</h1>
             <p className='text-gray-500 text-sm ml-1'>@{tweet?.userId.username}</p>
+            <p className='text-grey-500 text-[12px] ml-3 pt-[2px]'>{new Date(tweet.createdAt).toLocaleString()}</p>
+
           </div>
 
           <div className='flex w-full'>

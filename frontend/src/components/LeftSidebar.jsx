@@ -7,27 +7,54 @@ import {
   MessageOutlined as MessageOutlinedIcon,
   SmartToyOutlined as SmartToyOutlinedIcon,
   ListOutlined as ListOutlinedIcon,
-  StarOutline as StarOutlineIcon,
   PersonOutline as PersonOutlineIcon,
   MoreHoriz as MoreHorizIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import { IconButton } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from "react-hot-toast";
+import { USER_API_END_POINT } from '../utils/constant';
+import axios from 'axios';
+import { setLoggedInUser, setViewedProfile, setOtherUsers } from "../redux/userSlice";
 
 const LeftSidebar = () => {
-  const { loggedInUser } = useSelector((store) => store.user); // ✅ FIXED
+  const { loggedInUser } = useSelector((store) => store.user);
   const [selectedItem, setSelectedItem] = useState("Home");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleItemClick = (itemTitle) => {
     setSelectedItem(itemTitle);
     console.log(`Selected: ${itemTitle}`);
   };
 
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true
+      });
+
+      if(res.data.success)
+      {
+        dispatch(setLoggedInUser(null));
+        dispatch(setViewedProfile(null));
+        dispatch(setOtherUsers([]));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      toast.error("Logout failed");
+    }
+  };
+
   return (
     <div className='left_sidebar w-[23%] p-3 relative'>
-
+      
       {/* Logo */}
       <div className="left_sidebar_header px-1">
         <Link to="/">
@@ -46,27 +73,37 @@ const LeftSidebar = () => {
             title="Home" 
             Icon={HomeOutlinedIcon} 
             selected={selectedItem === "Home"}
-            onClick={handleItemClick}
+            onClick={() => handleItemClick("Home")}
           />
         </Link>
-
-        <Items title="Explore" Icon={ExploreOutlinedIcon} selected={selectedItem === "Explore"} onClick={handleItemClick} />
-        <Items title="Notifications" Icon={NotificationsOutlinedIcon} selected={selectedItem === "Notifications"} onClick={handleItemClick} />
-        <Items title="Messages" Icon={MessageOutlinedIcon} selected={selectedItem === "Messages"} onClick={handleItemClick} />
-        <Items title="Grok" Icon={SmartToyOutlinedIcon} selected={selectedItem === "Grok"} onClick={handleItemClick} />
-        <Items title="Lists" Icon={ListOutlinedIcon} selected={selectedItem === "Lists"} onClick={handleItemClick} />
-        <Items title="Premium" Icon={StarOutlineIcon} selected={selectedItem === "Premium"} onClick={handleItemClick} />
 
         <Link to={`/profile/${loggedInUser?._id}`}>
           <Items 
             title="Profile" 
             Icon={PersonOutlineIcon} 
             selected={selectedItem === "Profile"}
-            onClick={handleItemClick}
+            onClick={() => handleItemClick("Profile")}
           />
         </Link>
 
-        <Items title="More" Icon={MoreHorizIcon} selected={selectedItem === "More"} onClick={handleItemClick} />
+        <Items title="Explore" Icon={ExploreOutlinedIcon} selected={selectedItem === "Explore"} onClick={() => handleItemClick("Explore")} />
+        <Items title="Notifications" Icon={NotificationsOutlinedIcon} selected={selectedItem === "Notifications"} onClick={() => handleItemClick("Notifications")} />
+        <Items title="Messages" Icon={MessageOutlinedIcon} selected={selectedItem === "Messages"} onClick={() => handleItemClick("Messages")} />
+        <Items title="Grok" Icon={SmartToyOutlinedIcon} selected={selectedItem === "Grok"} onClick={() => handleItemClick("Grok")} />
+        <Items title="Lists" Icon={ListOutlinedIcon} selected={selectedItem === "Lists"} onClick={() => handleItemClick("Lists")} />
+
+        {/* ✅ Combined onClick to handle both state update and logout */}
+        <Items 
+          title="Logout" 
+          Icon={LogoutIcon} 
+          selected={selectedItem === "Logout"} 
+          onClick={() => {
+            handleItemClick("Logout");
+            logoutHandler();
+          }}
+        />
+
+        <Items title="More" Icon={MoreHorizIcon} selected={selectedItem === "More"} onClick={() => handleItemClick("More")} />
 
         <div className='button flex justify-center items-center p-2'>
           <button type='submit' className='bg-blue-400 py-2 w-[100%] rounded-full text-white hover:bg-blue-500'> Post </button>
@@ -75,17 +112,19 @@ const LeftSidebar = () => {
 
       {/* Footer - User Info */}
       <div className='left_sidebar_footer bg-gray-100 flex items-center absolute left-0 bottom-0 h-[55px] w-[100%] px-2 text-gray-700 justify-between'>
-        <Avatar src='/Profile_Photu.png' alt="avatar"  className='ml-1'/>
+        <Avatar 
+          src={loggedInUser?.profilePic || "/loggedInUserImage.png"} 
+          alt="avatar"  
+          className='ml-1'
+        />
         <div className="user_info mr-1 ml-[-5px]">
           <h4 className="user_name font-semibold"> {loggedInUser?.name || "Loading..."} </h4>
           <p className="user_id text-[13px] mt-[-5px]"> @{loggedInUser?.username || "unknown"} </p>
         </div>
 
-        <Link to="/login">
           <IconButton>
             <MoreHorizIcon style={{ color: "#444444" }} />
           </IconButton>
-        </Link>
       </div>
     </div>
   );

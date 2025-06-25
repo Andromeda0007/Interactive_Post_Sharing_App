@@ -84,7 +84,7 @@ const Profile = () => {
       <div className='z-10 flex justify-between mt-[-65px] absolute w-[100%] px-3 '>
         <div>
           <Avatar
-            src='/Profile_Photu.png'
+            src={isSelf ? "/loggedInUserImage.png" : '/Profile_Photu.png'}
             style={{ width: '120px', height: '120px' }}
             className='border-4 border-gray-50 cursor-pointer'
           />

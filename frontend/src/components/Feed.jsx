@@ -13,7 +13,7 @@ const Feed = () => {
     <div className='feed w-1/2 bg-gray-50 p-2 border-x-1 border-gray-100'>
       <CreatePost />
 
-      <div className='h-[69%] overflow-y-scroll'>
+      <div className='h-[67%] overflow-y-scroll'>
         {activeTweets?.length > 0 ? (
           activeTweets.map((tweet) => (
             <Tweet key={tweet._id} id={tweet._id} tweet={tweet} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { USER_API_END_POINT } from '../utils/constant';
 import toast from 'react-hot-toast'
@@ -10,9 +10,11 @@ const SignUp = () => {
   const [username, setusername] = useState("");
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const SubmitHandler = async (e)=>{
     e.preventDefault();
+    
     console.log(fullname, username, email, password);
 
       try{
@@ -22,6 +24,8 @@ const SignUp = () => {
         if(res.data.success)
         {
           toast.success(res.data.message);
+          navigate("/login");
+
         }
       }
       catch(error){
@@ -34,7 +38,7 @@ const SignUp = () => {
     <div className="login app w-full h-screen flex justify-center items-center bg-gray-50">
       <div className='bg-white w-[75%] h-[90%] shadow-2xl flex'>
         
-        <div className="logo w-[43%] flex items-center justify-center flex-col ">
+        <div className="logo w-[45%] flex items-center justify-center flex-col ">
           <Link to="/">
             <img 
               src="https://img.freepik.com/free-vector/twitter-new-2023-x-logo-white-background-vector_1017-45422.jpg?ga=GA1.1.1896762506.1750320800&semt=ais_hybrid&w=740" 
@@ -47,7 +51,7 @@ const SignUp = () => {
           </div>
         </div>
         
-        <form className="form w-[57%] py-7 px-9 border-l-2 border-gray-50 items-center flex flex-col"
+        <form className="form w-[55%] py-2 px-9 border-l-2 border-gray-50 items-center flex flex-col"
               onSubmit={SubmitHandler}>
           
           <div className='login_authentication w-full px-4 py-2 flex flex-col bg-gray-50 rounded-2xl mb-2'>
