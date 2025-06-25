@@ -5,11 +5,44 @@ import RepeatIcon from '@mui/icons-material/Repeat'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
-
+import DeleteIcon from '@mui/icons-material/Delete'
+import axios from 'axios'
+import { TWEET_API_END_POINT } from '../utils/constant'
+import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { getRefresh } from '../redux/tweetSlice'
 
 const Tweet = (props) => {
-  const {id, tweet} = props;
+  const {loggedInUser} = useSelector(store=>store.user);
+  const dispatch = useDispatch();
+
+  const likeOrDislikeHandler = async (tweetId)=>{
+    try{
+      const res = await axios.put(`${TWEET_API_END_POINT}/like/${tweetId}`, {userId: loggedInUser._id}, {withCredentials:true});
+      dispatch(getRefresh());
+      toast.success(res.data.message);
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  const deleteTweetHandler = async (tweetId)=>{
+    try{
+      console.log(tweetId);
+        const res = await axios.delete(`${TWEET_API_END_POINT}/delete/${tweetId}`, {withCredentials:true});
+        dispatch(getRefresh());
+        console.log(res);
+        toast.success(res.data.message);
+    }
+    catch(error)
+    {
+      console.log(error);
+      toast.error(error.response.data.message)
+    }
+  };
+
+  const {tweet} = props;
   console.log(tweet);
   return (
     <div className='border-2 border-gray-50 mt-2 bg-white p-2 rounded-xl shadow-sm'>
@@ -41,7 +74,8 @@ const Tweet = (props) => {
                 <p className='text-[12px]'> 0 </p>
               </div>
 
-              <div className='flex items-center gap-[2px] w-full cursor-pointer'>
+              <div className='flex items-center gap-[2px] w-full cursor-pointer'
+                    onClick={()=>likeOrDislikeHandler(tweet?._id)}>
                 <FavoriteBorderIcon style={{fontSize:"medium"}}
                   className=' hover:text-red-400 text-gray-700'/>
                 <p className='text-[12px]'> {tweet.like.length} </p>
@@ -53,10 +87,14 @@ const Tweet = (props) => {
                   style={{fontSize:"medium"}}/>
                 <p className='text-[12px]'> {0} </p>
               </div>
-              <div className='flex items-center ml-[-25px] cursor-pointer'>
-                  <FileUploadIcon style={{color:"#555555", fontSize:"medium"}}/>
-              </div>
 
+              {
+                (loggedInUser?._id === tweet?.userId?._id) && (
+                  <div onClick={()=>deleteTweetHandler(tweet?._id)} className='flex items-center ml-[-25px] cursor-pointer hover:scale-[1.1]'>
+                    <DeleteIcon style={{color:"#555555", fontSize:"medium"}}/>
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
