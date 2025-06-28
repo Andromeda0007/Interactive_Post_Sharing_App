@@ -84,7 +84,6 @@ export const likeOrDislike = async (req, res)=>{
 export const getAllMyTweets = async (req, res) => {
   try {
     const id = req.params.id; // Logged-in user ID
-    console.log("lund le le", id);
 
     // Verify that user exists
     const user = await User.findById(id);
