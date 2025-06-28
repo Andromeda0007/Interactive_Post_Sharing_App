@@ -51,13 +51,13 @@ const Login = () => {
         <div className="logo w-[43%] flex items-center justify-center flex-col ">
           <Link to="/">
             <img 
-              src="./Square_Monkey.jpg"
+              src="https://img.freepik.com/free-vector/money-rainbow-logo-design_474888-2243.jpg?semt=ais_hybrid&w=740"
               alt="Twitter Logo" 
               className="max-w-full max-h-full object-contain"
             />
           </Link>
-          <div className='mt-[-50px] px-2'>
-            <h1 className='text-[40px] font-bold text-gray-800'>Say More!!</h1>
+          <div className='mt-[-20px] px-2'>
+            <h1 className='text-[40px] font-bold pl-4 text-gray-800'>Say More!!</h1>
           </div>
         </div>
 

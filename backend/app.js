@@ -14,7 +14,7 @@ const app = express();
 databaseConnection(); 
 
 app.use(cors({
-  origin: "https://interactive-post-sharing-app-unmg.vercel.app", // your frontend URL
+  origin: "http://localhost:5173", // your frontend URL
   credentials: true, // 👈 allow cookies to be sent/received
 }));
  

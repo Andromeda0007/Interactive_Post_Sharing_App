@@ -59,8 +59,8 @@ const LeftSidebar = () => {
       <Link to="/">
         <div className="left_sidebar_header flex items-center">
             <img 
-              className='twitter_logo h-[70px] opacity-85 hover:scale-[1.05] transition-transform duration-300 ease-out mb-1'
-              src="./Square_Monkey.jpg"
+              className='twitter_logo h-[55px] opacity-85 hover:scale-[1.05] transition-transform duration-300 ease-out mb-1'
+              src="https://img.freepik.com/free-vector/money-rainbow-logo-design_474888-2243.jpg?semt=ais_hybrid&w=740"
               alt="twitter_image"
             />
         </div>

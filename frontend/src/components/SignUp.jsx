@@ -38,18 +38,18 @@ const SignUp = () => {
     <div className="login app w-full h-screen flex justify-center items-center bg-gray-50">
       <div className='bg-white w-[75%] h-[90%] shadow-2xl flex'>
         
-        <div className="logo w-[45%] flex items-center justify-center flex-col ">
-          <Link to="/">
-            <img 
-              src="./Square_Monkey.jpg" 
-              alt="Twitter Logo" 
-              className="max-w-full max-h-full object-contain"
-            />
-          </Link>
-          <div className='mt-[-50px] px-2'>
-            <h1 className='text-[40px] font-bold text-gray-800'> Say More!!</h1>
+        <div className="logo w-[43%] flex items-center justify-center flex-col ">
+            <Link to="/">
+              <img 
+                src="https://img.freepik.com/free-vector/money-rainbow-logo-design_474888-2243.jpg?semt=ais_hybrid&w=740"
+                alt="Twitter Logo" 
+                className="max-w-full max-h-full object-contain"
+              />
+            </Link>
+            <div className='mt-[-20px] px-2'>
+              <h1 className='text-[40px] font-bold pl-4 text-gray-800'>Say More!!</h1>
+            </div>
           </div>
-        </div>
         
         <form className="form w-[55%] py-2 px-9 border-l-2 border-gray-50 items-center flex flex-col"
               onSubmit={SubmitHandler}>
